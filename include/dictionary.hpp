@@ -27,7 +27,7 @@ protected:
 	NodeAL * mpt_Data ; 		//<! Storage area: vector dynamically allocated.
 	int mi_Length;              //<! List's current size
 	int mi_Capacity;            //<! Storage maximum capacity
-
+	KeyComparator comp;
 	//<! Node related to the key pair.
 	struct NodeAL {  
 		Key id;    // The key is an simple integer
@@ -165,7 +165,7 @@ public:
 	 * 	@return True if the remove happened successfully; False otehrwise.
 	 *	@note
 	 */
-	bool remove( const Key & _x );
+//	bool remove( const Key & _x );
 
 	/*!
 	 *  @brief Inserts an Key and infor in the array 
