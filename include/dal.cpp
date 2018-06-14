@@ -8,15 +8,29 @@
  * @title The Dictionary ADT using an unsorted array
  */
 
-#include "dictionary.h"
+#include "dictionary.hpp"
+
+/*!
+ * 	@brief Auxiliar linear search for an key.
+ * 	@param _x The key.
+ */
+template < typename Key, typename Data, typename KeyComparator >
+int DAL<Key, Data, KeyComparator>::_search( const Key & _x ) const{
+	
+	for (int i = 0; i < mi_Length; ++i)
+		if ( mpt_Data[i].id == _x )
+			return i;
+
+	return -1;
+}
 
 /*! 
  *  @brief Class constructor, allocates in mpt_Data a vector with size = "_MaxSz".
  *	@param _MaxSz The capacity Size.
  */
 template < typename Key, typename Data, typename KeyComparator >
-DAL<Key, Data, KeyComparator>::DAL( int _MaxSz )
-{
+DAL<Key, Data, KeyComparator>::DAL( int _MaxSz ){
+	
 	mi_Capacity = _MaxSz;
 	mi_Length = 0;
 	mpt_Data = new NodeAL[ _MaxSz ];
@@ -25,8 +39,8 @@ DAL<Key, Data, KeyComparator>::DAL( int _MaxSz )
 
 //! @brief Class Destructor, destructs the memory pointed by mpt_Data.
 template < typename Key, typename Data, typename KeyComparator >
-DAL<Key, Data, KeyComparator>::~DAL()
-{
+DAL<Key, Data, KeyComparator>::~DAL(){
+	
 	delete[] mpt_Data;
 }
 
@@ -36,8 +50,8 @@ DAL<Key, Data, KeyComparator>::~DAL()
  *  @return True if the key was removed successfuly; False otherwise.
  */
 template < typename Key, typename Data, typename KeyComparator >
-bool DAL<Key, Data, KeyComparator>::remove( const Key & _x )
-{
+bool DAL<Key, Data, KeyComparator>::remove( const Key & _x ){
+
 	//! Verifies if the array is empty
 	if( empty() )
 	{
@@ -66,8 +80,8 @@ bool DAL<Key, Data, KeyComparator>::remove( const Key & _x )
  *  @return True if the key was found; False otherwise.
  */
 template < typename Key, typename Data, typename KeyComparator >
-bool DAL<Key, Data, KeyComparator>::search( const Key & _x, Data & _s ) const
-{
+bool DAL<Key, Data, KeyComparator>::search( const Key & _x, Data & _s ) const{
+
 	int indice = _search( _x );
 
 	if( indice == -1 )
@@ -84,18 +98,18 @@ bool DAL<Key, Data, KeyComparator>::search( const Key & _x, Data & _s ) const
  *  @return True se a inserção foi bem sucedida, false caso contrário.
  */
 template < typename Key, typename Data, typename KeyComparator >
-bool DAL<Key, Data, KeyComparator>::insert( const Key & _newKey, const Data & _newInfo )
-{
+bool DAL<Key, Data, KeyComparator>::insert( const Key & _newKey, const Data & _newInfo ){
+
 	//<! Verifies if the array is full
-	if( full() )
-	{
+	if( full() ){
+
 		std::cout << "\t@insert ERROR: Cannot insert a new element in a full Dictionary!\n";
 		return false;
 	}
 	
 	//! If there is an element in the Dictionaray with this key, do not insert it
-	if( not (_search( _newKey ) == -1) ) 
-	{
+	if( not (_search( _newKey ) == -1) ) {
+
 		std::cout << "\t@insert ERROR: Key already exists on the Dictionary!\n";
 		return false;
 	}
@@ -111,8 +125,8 @@ bool DAL<Key, Data, KeyComparator>::insert( const Key & _newKey, const Data & _n
  *  @return The smaller key.
  */
 template < typename Key, typename Data, typename KeyComparator >
-Key DAL<Key, Data, KeyComparator>::min( void ) const
-{
+Key DAL<Key, Data, KeyComparator>::min( void ) const{
+
 	KeyComparator compare; //<! Comparation functor
 	
 	Key min = mpt_Data[0].id; //<! A min value
@@ -129,8 +143,8 @@ Key DAL<Key, Data, KeyComparator>::min( void ) const
  *  @return The bigger key.
  */
 template < typename Key, typename Data, typename KeyComparator >
-Key DAL<Key, Data, KeyComparator>::max( void ) const
-{
+Key DAL<Key, Data, KeyComparator>::max( void ) const{
+
 	KeyComparator compare; //!< Comparation functor
 	
 	Key max = mpt_Data[0].id;//!< A max value
@@ -147,18 +161,18 @@ Key DAL<Key, Data, KeyComparator>::max( void ) const
  *  @return True If it does exists; False otherwise.
  */
 template < typename Key, typename Data, typename KeyComparator >
-bool DAL<Key, Data, KeyComparator>::sucessor( const Key & _x , Key & _y ) const
-{
+bool DAL<Key, Data, KeyComparator>::sucessor( const Key & _x , Key & _y ) const{
+
 	int indice = _search( _x );
 
-	if( indice == -1 ) // If it found the element or if it is the last one
-	{
+	if( indice == -1 ){ // If it found the element or if it is the last one
+
 		std::cout << "\t@sucessor ERROR: Key not found on the Dictionary!\n";
 		return false;
 	}
 
-	if( indice == (mi_Length - 1) )
-	{
+	if( indice == (mi_Length - 1) ){
+
 		std::cout << "\t@sucessor ERROR: Cannot recover a sucessor from the last element on array!\n";
 		return false;
 	}
@@ -172,18 +186,18 @@ bool DAL<Key, Data, KeyComparator>::sucessor( const Key & _x , Key & _y ) const
  *  @return True If it does exists; False otherwise.
  */
 template < typename Key, typename Data, typename KeyComparator >
-bool DAL<Key, Data, KeyComparator>::predecessor( const Key & _x , Key & _y ) const
-{
+bool DAL<Key, Data, KeyComparator>::predecessor( const Key & _x , Key & _y ) const{
+
 	int indice = _search( _x );
 
-	if( indice == -1 ) // If it found the element or if it is the first one
-	{
+	if( indice == -1 ){ // If it found the element or if it is the first one
+
 		std::cout << "\t@predecessor ERROR: Key not found on the Dictionary!\n";
 		return false;
 	}
 
-	if( indice == 0 )
-	{
+	if( indice == 0 ){
+		
 		std::cout << "\t@predecessor ERROR: Cannot recover a predecessor from the first element on array!\n";
 		return false;
 	}
@@ -197,8 +211,8 @@ bool DAL<Key, Data, KeyComparator>::predecessor( const Key & _x , Key & _y ) con
  *	@return True if it is full; False otherwise. 
  */
 template < typename Key, typename Data, typename KeyComparator >
-bool DAL<Key, Data, KeyComparator>::full() const
-{
+bool DAL<Key, Data, KeyComparator>::full() const{
+
 	return ( mi_Capacity == mi_Length );
 }
 
@@ -207,8 +221,8 @@ bool DAL<Key, Data, KeyComparator>::full() const
  *	@return True if it is empty; False otherwise. 
  */
 template < typename Key, typename Data, typename KeyComparator >
-bool DAL<Key, Data, KeyComparator>::empty() const
-{
+bool DAL<Key, Data, KeyComparator>::empty() const{
+
 	return (  mi_Length == 0 );
 }
 
@@ -217,8 +231,8 @@ bool DAL<Key, Data, KeyComparator>::empty() const
  *	@return The capacity. 
  */
 template < typename Key, typename Data, typename KeyComparator >
-int DAL<Key, Data, KeyComparator>::capacity( void ) const
-{
+int DAL<Key, Data, KeyComparator>::capacity( void ) const{
+
 	return mi_Capacity;
 }
 
@@ -227,8 +241,8 @@ int DAL<Key, Data, KeyComparator>::capacity( void ) const
  *	@return The lenght. 
  */
 template < typename Key, typename Data, typename KeyComparator >
-int DAL<Key, Data, KeyComparator>::size( void ) const
-{
+int DAL<Key, Data, KeyComparator>::size( void ) const{
+
 	return mi_Length;
 }
 
