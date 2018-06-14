@@ -8,7 +8,7 @@
  * @title The Dictionary ADT using an unsorted array
  */
 
-#include "dictionary.h"
+#include "dictionary.hpp"
 
 /*! 
  *  @brief Class constructor, allocates in mpt_Data a vector with size = "_MaxSz".

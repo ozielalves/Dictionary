@@ -124,7 +124,7 @@ public:
 	 */
 	int size( void ) const;
 
-	/*! Sends back to the output stream an ASCII representation for the list.*/
+	/*! @brief Sends back to the output stream an ASCII representation for the list.*/
 	inline friend
 	std::ostream & operator<<( std::ostream & _os , const DAL & _oList ){
 		_os << "[ ";
