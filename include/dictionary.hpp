@@ -13,7 +13,7 @@
 
 #include <iostream>
 #include <string>
-
+#include <iterator>
 //! @brief Dictionary with Array List 
 template < typename Key, typename Data, typename KeyComparator >
 class DAL{
@@ -127,9 +127,9 @@ public:
 	inline friend
 	std::ostream & operator<<( std::ostream & _os , const DAL & _oList ){
 		_os << "[ ";
-		for ( int i (0); i < _oList.m_length; ++i )
-			_os << " ID: " << _oList.m_data[ i ].id << ", INFO: "
-			    << _oList.m_data[ i ].info << " ";
+		for ( int i (0); i < _oList.mi_Length; ++i )
+			_os << " ID: " << _oList.mpt_Data[ i ].id << ", INFO: "
+			    << _oList.mpt_Data[ i ].info << " ";
 		_os << "]";
 		return _os;
 	}
@@ -182,14 +182,14 @@ public:
 	 *  @return The smaller key.
 	 * 	@note As the array is sorted now, it returns the first element in the array.
 	 */
-	Key min( void ) const;
+	Key min( void ) const { return this->mpt_Data[0].id ; }
 	
 	/*!
 	 *  @brief Recovers the bigger key in the dictionary.
 	 *  @return The bigger key.
 	 * 	@note As the array is sorted now, it returns the last element in the array.
 	 */
-	Key max( void ) const;
+	Key max( void ) const { return this->mpt_Data[this->mi_Length-1].id;}
 
 	/*!
 	 *  @brief Recovers in "_y" the sucessor key to "_x".
