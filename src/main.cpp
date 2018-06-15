@@ -29,5 +29,11 @@ int main(int argc, char *argv[])
 	std::cout << "Dict Min : " <<  Dict.min() << std::endl;
 	std::cout << "Dict Max : " <<  Dict.max() << std::endl;
 
+	Dict.remove(3);
+	Dict.remove(7);
+
+	std::cout << Dict << std::endl;
+
+
 	return 0;
 }

@@ -18,6 +18,7 @@ template <typename Key, typename Data, typename KeyComparator>
 int DSAL<Key, Data, KeyComparator>::_search ( const Key & _x ) const {
 
 	auto begin = this->mpt_Data;
+	auto begin_back = begin;
 	auto end = this->mpt_Data + this->mi_Length;
 	KeyComparator comp;
 
@@ -25,7 +26,8 @@ int DSAL<Key, Data, KeyComparator>::_search ( const Key & _x ) const {
 
 		auto mid = begin + (end-begin)/2;
 
-		if( comp (mid->id, _x) == 0 and comp(_x, mid->id) == 0) return mid - begin;
+		if( comp (mid->id, _x) == 0 and comp(_x, mid->id) == 0)
+			return mid - begin_back;
 
 		else if (comp (mid->id, _x)){
 
@@ -70,4 +72,39 @@ bool DSAL<Key, Data, KeyComparator>::insert
 
 	std::cout << "mi lenght = " << this->mi_Length << std::endl;
 	return true;
+}
+
+template <typename Key, typename Data, typename KeyComparator>
+bool DSAL<Key, Data, KeyComparator>::sucessor( const Key & _x , Key & _y ) const{
+
+	int index = _search(_x);
+	if(index == this->mi_Length) return false;
+	_y = this->mpt_Data[index+1].id;
+	return true;
+}
+
+template <typename Key, typename Data, typename KeyComparator>
+bool DSAL<Key, Data, KeyComparator>::predecessor( const Key & _x , Key & _y ) const{
+
+	int index = _search(_x);
+	if(index == 0) return false;
+	_y = this->mpt_Data[index-1].id;
+	return true;
+}
+
+template <typename Key, typename Data, typename KeyComparator>
+bool DSAL<Key, Data, KeyComparator>::remove( const Key & _x ) {
+
+
+	int index = _search(_x);
+	std::cout << index << std::endl;
+	if (index == -1) return false;
+	
+	if(this->mi_Length < 1){
+		throw std::runtime_error("Can't remove elements from empty dict");
+	}
+	std::copy(this->mpt_Data+index+1,
+			this->mpt_Data+this->mi_Length,this->mpt_Data+index);
+
+	this->mi_Length--;
 }

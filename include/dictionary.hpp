@@ -166,7 +166,7 @@ public:
 	 * 	@return True if the remove happened successfully; False otehrwise.
 	 *	@note
 	 */
-//	bool remove( const Key & _x );
+	bool remove( const Key & _x );
 
 	/*!
 	 *  @brief Inserts an Key and infor in the array 
