@@ -64,13 +64,11 @@ bool DSAL<Key, Data, KeyComparator>::insert
 
 			*pivot = NodeAL(_newKey,_newInfo);
 			this->mi_Length++;
-			std::cout << "mi lenght = " << this->mi_Length << std::endl;
 			return true;
 		}
 	}
 	this->mpt_Data[this->mi_Length++] = NodeAL(_newKey,_newInfo);
 
-	std::cout << "mi lenght = " << this->mi_Length << std::endl;
 	return true;
 }
 
@@ -97,7 +95,6 @@ bool DSAL<Key, Data, KeyComparator>::remove( const Key & _x ) {
 
 
 	int index = _search(_x);
-	std::cout << index << std::endl;
 	if (index == -1) return false;
 	
 	if(this->mi_Length < 1){
