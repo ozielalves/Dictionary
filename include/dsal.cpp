@@ -48,20 +48,26 @@ bool DSAL<Key, Data, KeyComparator>::insert
 	
 	if(index != -1){ return false;}
 
-	/* Nao consigo declarar NodeAL * pivot */
-	auto pivot = this->mpt_Data;
-	/* há algo errado aqui */ 
-	KeyComparator comp;
+	NodeAL *pivot;
 	int distance;
+	KeyComparator comp;
 	for (auto i = this->mpt_Data;  i < this->mpt_Data + this->mi_Length; ++i) {
-		if(comp(i->id, _newKey)){
+		if(comp(_newKey,i->id)){
 			pivot = i;
 			distance = i - this->mpt_Data;
-			std::copy(this->mpt_Data+distance,this->mpt_Data+ this->mi_Length,
-					this->mpt_Data+distance+1);
-			*(pivot+distance) = NodeAL(_newKey,_newInfo);
+			
+			for (int i = this->mi_Length; i > distance; --i) {
+				this->mpt_Data[i] =  this->mpt_Data[i-1]; 
+			}
+
+			*pivot = NodeAL(_newKey,_newInfo);
+			this->mi_Length++;
+			std::cout << "mi lenght = " << this->mi_Length << std::endl;
 			return true;
 		}
 	}
 	this->mpt_Data[this->mi_Length++] = NodeAL(_newKey,_newInfo);
+
+	std::cout << "mi lenght = " << this->mi_Length << std::endl;
+	return true;
 }
