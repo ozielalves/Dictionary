@@ -20,21 +20,20 @@ class DAL{
 
 protected:
 
-	using Key = int ; // Alias to the key
-	using Data = std::string ; // Alias to the data
+//	using Key = int ; // Alias to the key
+//	using Data = std::string ; // Alias to the data
 	
-	static const int SIZE = 50; //<! List's default size
-	NodeAL * mpt_Data ; 		//<! Storage area: vector dynamically allocated.
-	int mi_Length;              //<! List's current size
-	int mi_Capacity;            //<! Storage maximum capacity
-	KeyComparator comp;
-	//<! Node related to the key pair.
 	struct NodeAL {  
 		Key id;    // The key is an simple integer
 		Data info; // A string
 
 		NodeAL( Key k_= Key(), Data d_= Data() ) : id(k_), info(d_) {/*Empty*/}
 	};
+	static const int SIZE = 50; //<! List's default size
+	NodeAL * mpt_Data ; 		//<! Storage area: vector dynamically allocated.
+	int mi_Length;              //<! List's current size
+	int mi_Capacity;            //<! Storage maximum capacity
+	//<! Node related to the key pair.
 
 	/*!
 	 * 	@brief Auxiliar linear search for an key.
