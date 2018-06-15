@@ -139,6 +139,8 @@ public:
 template < typename Key, typename Data, typename KeyComparator >
 class DSAL : public DAL< Key, Data, KeyComparator > /*heritage*/ {
 
+	using NodeAL = typename DAL< Key, Data, KeyComparator >::NodeAL;
+
 private:
 
 	/*!
