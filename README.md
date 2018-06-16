@@ -13,7 +13,7 @@ _DAL_:
 - [X] Max
 - [X] Sucessor
 - [X] Predecessor
-- [ ] Testings
+- [X] Testings
 
 _DSAL_:
 - [X] Insert
@@ -23,7 +23,7 @@ _DSAL_:
 - [X] Sucessor
 - [X] Predecessor
 - [X] Auxiliar search 
-- [ ] Testings
+- [X] Testings
 
 ## Compiling
 	a) For compiling, use:
