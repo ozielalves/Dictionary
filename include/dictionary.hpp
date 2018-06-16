@@ -14,6 +14,7 @@
 #include <iostream>
 #include <string>
 #include <iterator>
+
 //! @brief Dictionary with Array List 
 template < typename Key, typename Data, typename KeyComparator >
 class DAL{
@@ -73,7 +74,9 @@ public:
 	 *  @param  _newInfo The new data
 	 *  @return True se a inserção foi bem sucedida, false caso contrário.
 	 */
-	bool insert( const Key & _newKey, const Data & _newInfo ); // Insere na lista.	
+	bool insert( const Key & _newKey, const Data & _newInfo ); // Insere na lista.
+//
+	void reserve( size_t new_capacity );	
 
 	/*!
 	 *  @brief Recovers the smaller key in the dictionary.

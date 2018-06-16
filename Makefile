@@ -25,7 +25,7 @@ docs:
 	@doxygen config
 	
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(HEADERS) | $(OBJDIR)
-	@$(CXX) $(CXXFLAGS) -c $< -o $@
+	@$(CXX) -w $(CXXFLAGS) -c $< -o $@
 	@echo "Sources $<" 
 	@echo "Compiling Files $< to  $@ "
 	@echo "Compiled "$<" Succesfully!"

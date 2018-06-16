@@ -2,7 +2,7 @@
  * @file dal.cpp
  * @version 1.0
  * @since Jun, 12.
- * @date May, 12.
+ * @date May, 14.
  * @author Oziel Alves (ozielalves@ufrn.edu.br)
  * @author Max Willian (maxwilliam780@gmail.com)
  * @title The Dictionary ADT using an unsorted array
@@ -55,6 +55,7 @@ bool DAL<Key, Data, KeyComparator>::remove( const Key & _x ){
 	//! Verifies if the array is empty
 	if( empty() )
 	{
+
 		std::cout << "\n@remove ERROR: Cannot remove an element from an empty Dictionary!\n";
 		return false;
 	}
@@ -92,6 +93,29 @@ bool DAL<Key, Data, KeyComparator>::search( const Key & _x, Data & _s ) const{
 }
 
 /*!
+ *  @brief  Resizes the array, helping insertion.
+ *  @param  new_capacity The new Vector capacity
+ */
+template < typename Key, typename Data, typename KeyComparator >
+void DAL<Key, Data, KeyComparator>::reserve( size_t new_capacity ){
+
+	if( new_capacity <= mi_Capacity ) return; // Nothing to do 
+
+	mi_Capacity = new_capacity;
+	NodeAL * tmp = new NodeAL[new_capacity];
+	std::copy(mpt_Data, mpt_Data + mi_Length, tmp);
+
+	delete [] mpt_Data;
+
+	mpt_Data = new NodeAL[mi_Capacity];
+	for( auto i(0); i < mi_Length; i++ ){
+		*(mpt_Data+i) = *(tmp+i);
+	}
+
+	delete [] tmp;
+}
+
+/*!
  *  @brief  Inserts the Key and info on the array (only if not empty of if the key does not exists yet in the array).
  *  @param  _newKey  The new key
  *  @param  _newInfo The new data
@@ -103,14 +127,15 @@ bool DAL<Key, Data, KeyComparator>::insert( const Key & _newKey, const Data & _n
 	//<! Verifies if the array is full
 	if( full() ){
 
-		std::cout << "\t@insert ERROR: Cannot insert a new element in a full Dictionary!\n";
+		/*std::cout << "\t@insert ERROR: Cannot insert a new element in a full Dictionary!\n";*/
+		reserve(mi_Capacity + 1);		
 		return false;
 	}
 	
 	//! If there is an element in the Dictionaray with this key, do not insert it
 	if( not (_search( _newKey ) == -1) ) {
 
-		std::cout << "\t@insert ERROR: Key already exists on the Dictionary!\n";
+		std::cout << "\n@insert ERROR: Key already exists on the Dictionary!\n";
 		return false;
 	}
  
@@ -167,13 +192,13 @@ bool DAL<Key, Data, KeyComparator>::sucessor( const Key & _x , Key & _y ) const{
 
 	if( indice == -1 ){ // If it found the element or if it is the last one
 
-		std::cout << "\t@sucessor ERROR: Key not found on the Dictionary!\n";
+		std::cout << "\n@sucessor ERROR: Key not found on the Dictionary!\n";
 		return false;
 	}
 
 	if( indice == (mi_Length - 1) ){
 
-		std::cout << "\t@sucessor ERROR: Cannot recover a sucessor from the last element on array!\n";
+		std::cout << "@sucessor ERROR: Cannot recover a sucessor from the last element on array!\n";
 		return false;
 	}
 
@@ -192,13 +217,13 @@ bool DAL<Key, Data, KeyComparator>::predecessor( const Key & _x , Key & _y ) con
 
 	if( indice == -1 ){ // If it found the element or if it is the first one
 
-		std::cout << "\t@predecessor ERROR: Key not found on the Dictionary!\n";
+		std::cout << "\n@predecessor ERROR: Key not found on the Dictionary!\n";
 		return false;
 	}
 
 	if( indice == 0 ){
 		
-		std::cout << "\t@predecessor ERROR: Cannot recover a predecessor from the first element on array!\n";
+		std::cout << "\n@predecessor ERROR: Cannot recover a predecessor from the first element on array!\n";
 		return false;
 	}
 
