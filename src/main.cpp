@@ -7,10 +7,7 @@ int main(int argc, char *argv[])
 	
 		bool operator() (const int &lhs, const int &rhs ) const { return lhs < rhs; }
 	};
-<<<<<<< HEAD
 
-
-// DSAL Testing
 {
 
 /*--------------------------- Constructor Test ------------------------------*/
@@ -23,41 +20,13 @@ int main(int argc, char *argv[])
 	assert( Dict.capacity() == 10 );
 	assert( Dict.size() == 0 );	
 
-	std::cout << "                                                     Successfully done!" << "                                             \n";
-	
-	std::cout << "\nCurrent Dictionary: \n";	
-=======
-
-/*--------------------------- Constructor Test ------------------------------*/
-
-	std::cout << "\n                                                    Constructor Testing..." << "                                             \n";
-
-	DSAL<int, int,Comparator> Dict(10);
-	assert( Dict.full() == false );
-	assert( Dict.empty() );
-	assert( Dict.capacity() == 10 );
-	assert( Dict.size() == 0 );	
-
 	std::cout << "                                                     Successfully done..." << "                                             \n";
 	std::cout << "\nCurrent Dictionary: \n";	
-
->>>>>>> 8431ad2fda9e420632f37e4e7448a4cf8deef1a1
 	std::cout << "\t" << Dict << std::endl;
 
 /*---------------------------- Insertion Test -------------------------------*/ 
 
 	std::cout << "\n                                                     Insertion Testing..." << "                                             \n";
-<<<<<<< HEAD
-	
-	Dict.insert(4,7);
-	
-	std::cout << "\nCurrent Dictionary: \n";	
-	std::cout << "\t" << Dict << std::endl;
-
-	Dict.insert(3,6);
-	
-	std::cout << "\nCurrent Dictionary: \n";	
-=======
 	Dict.insert(4,7);
 	std::cout << "\nCurrent Dictionary: \n";	
 
@@ -66,31 +35,22 @@ int main(int argc, char *argv[])
 	Dict.insert(3,6);
 	std::cout << "\nCurrent Dictionary: \n";	
 
->>>>>>> 8431ad2fda9e420632f37e4e7448a4cf8deef1a1
+
 	std::cout << "\t" << Dict << std::endl;
 
 	Dict.insert(1,5);
 
 	std::cout << "\nCurrent Dictionary: \n";	
-<<<<<<< HEAD
-=======
-
->>>>>>> 8431ad2fda9e420632f37e4e7448a4cf8deef1a1
 	std::cout << "\t" << Dict << std::endl;
 
 	Dict.insert(2,5);
 
 	std::cout << "\nCurrent Dictionary: \n";	
-<<<<<<< HEAD
-=======
-
->>>>>>> 8431ad2fda9e420632f37e4e7448a4cf8deef1a1
 	std::cout << "\t" << Dict << std::endl;
 
 	Dict.insert(7,5);
 	
 	std::cout << "\nCurrent Dictionary: \n";	
-<<<<<<< HEAD
 	std::cout << "\t" << Dict << std::endl;
 
 /*----------------------------- Reserve Test --------------------------------*/ 
@@ -117,12 +77,6 @@ int main(int argc, char *argv[])
 	std::cout << "\t" << dict << std::endl;
 
 	std::cout << "\n                                                     Successfully done!" << "                                             \n";
-=======
-
-	std::cout << "\t" << Dict << std::endl;
-
-	std::cout << "\n                                                     Successfully done..." << "                                             \n";
->>>>>>> 8431ad2fda9e420632f37e4e7448a4cf8deef1a1
 
 /*--------------------------- Min and Max Test ------------------------------*/	
 	
@@ -131,7 +85,6 @@ int main(int argc, char *argv[])
 	std::cout << "Dict Min : " <<  Dict.min() << std::endl;
 	std::cout << "Dict Max : " <<  Dict.max() << std::endl;
 
-<<<<<<< HEAD
 	std::cout << "\n                                                     Successfully done!" << "                                             \n";
 
 
@@ -292,11 +245,6 @@ int main(int argc, char *argv[])
 }
 
 	std::cout << "\n                                                       Exit Success!" << "                                             \n";
-=======
-	std::cout << "\n                                                     Successfully done..." << "                                             \n";
-
- 
->>>>>>> 8431ad2fda9e420632f37e4e7448a4cf8deef1a1
 
 	return EXIT_SUCCESS;
 }
