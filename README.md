@@ -1,8 +1,8 @@
 # Dictionary
-Implementation of the Abstract Data Type (ADT) based on an ordered and unordered sequential list.
+Implementation of the Dictionary, an Abstract Data Type (ADT) based on an ordered and unordered sequential list.
 
 ## TODO
-DAL:
+_DAL_:
 - [X] Special members
 - [X] Search
 - [X] Auxiliar search
@@ -15,7 +15,7 @@ DAL:
 - [X] Predecessor
 - [ ] Testings
 
-DSAL:
+_DSAL_:
 - [X] Insert
 - [X] Remove
 - [X] Min
@@ -26,15 +26,15 @@ DSAL:
 - [ ] Testings
 
 ## Compiling
-a) For compiling, use:
+	a) For compiling, use:
 	`$ make`
 
 ## Running
-b) For running, use:
+	b) For running, use:
 	`$ ./bin/dict`
 
 ## Authorship
 
 Program developed by Max Willian (maxwilliam780@gmail.com) and Oziel Alves (ozielalves@ufrn.edu.br), 2018.1
 
-&copy; IMD/UFRN 2017.1
+&copy; IMD/UFRN 2018.1
