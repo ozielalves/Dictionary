@@ -144,15 +144,15 @@ int main(int argc, char *argv[])
 /*--------------------- Sucessor and Predecessor Test -----------------------*/
 	std::cout << "\n                                              Sucessor and Predecessor Testing..." << "                                             \n";
 
-	int chave; //aux para testes dos metodos
+	int chave; // Aux variable to the test methode
 	assert( dict.sucessor(7, chave) );
-	assert( chave == 2 );   //chave recuperada na busca
-	assert( dict.sucessor(6, chave) == false ); //ultimo elemento nao tem sucessor
-	assert( chave == 2 );   //valor continua o antigo
+	assert( chave == 2 ); // Recovered key from the search
+	assert( dict.sucessor(6, chave) == false ); // Last elemnt has no Sucessor
+	assert( chave == 2 ); // The element stills the same(wasn't setted)
 	assert( dict.predecessor(7, chave) );
-	assert( chave == 3 );   //chave recuperada na busca
-	assert( dict.predecessor(0, chave) == false ); //primeiro elemento nao tem antecessor
-	assert( chave == 3 );   //valor continua o antigo
+	assert( chave == 3 ); // Recovered key from the search
+	assert( dict.predecessor(0, chave) == false ); // First element has no Predecessor
+	assert( chave == 3 ); // The element stills the same(wasn't setted)
 	std::cout << "\n                                                     Successfully done!" << "                                             \n";
 
 
@@ -161,9 +161,9 @@ int main(int argc, char *argv[])
 	
 	int elem; // Aux variable to test search methode
 	assert( dict.search(2, elem) ); // Exists
-	assert( elem == 745 );   // Recovered value from the search
+	assert( elem == 745 ); // Recovered value from the search
 	assert( dict.search(8, elem) == false ); // Does not exists
-	assert( elem == 745 );   // The element stills the same(wasn't setted)
+	assert( elem == 745 ); // The element stills the same(wasn't setted)
 	std::cout << "\n                                                     Successfully done!" << "                                             \n";
 	
 
@@ -224,9 +224,9 @@ int main(int argc, char *argv[])
 	std::cout << "\n                                                      Search Testing..." << "                                             \n";
 	std::string elem;
 	assert( dict.search(3, elem) ); // Exists
-	assert( elem == "rancor" );   // Recovered value from the search
+	assert( elem == "rancor" ); // Recovered value from the search
 	assert( dict.search(8, elem) == false ); // Does not exists
-	assert( elem == "rancor" );   // Last value stills
+	assert( elem == "rancor" ); // Last value stills
 	std::cout << "\n                                                     Successfully done!" << "                                             \n";	
 
 
