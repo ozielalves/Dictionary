@@ -1,8 +1,8 @@
 #include "dictionary.hpp"
 #include <cassert>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
+
 	struct intComparator{
 	
 		bool operator() (const int &lhs, const int &rhs ) const { return lhs < rhs; }
@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 
 	std::cout << "\n                                                    Constructor Testing..." << "                                             \n";
 
-	DSAL<int, int,intComparator> Dict(10);
+	DSAL<int, int, intComparator> Dict(10);
 	assert( Dict.full() == false );
 	assert( Dict.empty() );
 	assert( Dict.capacity() == 10 );
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
 	std::cout << "\nAn second Dictionary: \n";
 
-	DSAL<int, int,intComparator> dict(2);
+	DSAL<int, int, intComparator> dict(2);
 
 	std::cout << "\nCurrent Dictionary: \n";	
 	std::cout << "\t" << dict << std::endl;

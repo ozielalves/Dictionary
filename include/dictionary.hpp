@@ -75,7 +75,11 @@ public:
 	 *  @return True se a inserção foi bem sucedida, false caso contrário.
 	 */
 	bool insert( const Key & _newKey, const Data & _newInfo ); // Insere na lista.
-//
+
+	/*!
+	 *  @brief  Resizes the array, helping insertion.
+	 *  @param  new_capacity The new Vector capacity
+	 */
 	void reserve( size_t new_capacity );	
 
 	/*!
@@ -169,7 +173,7 @@ public:
 	 * 	@return True if the remove happened successfully; False otehrwise.
 	 *	@note
 	 */
-	bool remove( const Key & _x );
+//	bool remove( const Key & _x );
 
 	/*!
 	 *  @brief Inserts an Key and infor in the array 
