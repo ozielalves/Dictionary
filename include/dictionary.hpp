@@ -79,13 +79,6 @@ public:
         }
         return *this;
 }
-	/* Disabling copy constructor and assignment operator */
-	/*! @brief disabled*/
-//	DAL(const DAL &) = delete;
-	
-	/*! @brief disabled*/
-//	DAL operator=( const DAL &) = delete;
-
 	/*!
 	 *  @brief  Remove the info related to the "_x" key.
 	 *  @param  _x The key
