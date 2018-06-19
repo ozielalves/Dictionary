@@ -31,7 +31,7 @@ _DSAL_:
 
 ## Running
 	b) For running, use:
-	`$ ./bin/dict`
+	`$ ./dict`
 
 ## Authorship
 

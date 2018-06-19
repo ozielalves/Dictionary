@@ -15,6 +15,7 @@ int main(int argc, char *argv[]){
 	std::cout << "\n                                                    Constructor Testing..." << "                                             \n";
 
 	DSAL<int, int, intComparator> Dict(10);
+
 	assert( Dict.full() == false );
 	assert( Dict.empty() );
 	assert( Dict.capacity() == 10 );
@@ -39,7 +40,7 @@ int main(int argc, char *argv[]){
 	std::cout << "\t" << Dict << std::endl;
 
 	Dict.insert(1,5);
-
+	
 	std::cout << "\nCurrent Dictionary: \n";	
 	std::cout << "\t" << Dict << std::endl;
 
@@ -245,6 +246,6 @@ int main(int argc, char *argv[]){
 }
 
 	std::cout << "\n                                                       Exit Success!" << "                                             \n";
-
+	
 	return EXIT_SUCCESS;
 }

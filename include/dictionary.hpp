@@ -53,14 +53,32 @@ public:
 	//! @brief Class Destructor, destructs the memory pointed by m_data
 	virtual ~DAL ( void );
 
-	/* Disabling copy constructor and assignment operator */
 
-	/*! @brief disabled*/
-	DAL(const DAL &) = delete;
-	
-	/*! @brief disabled*/
-	DAL operator=( const DAL &) = delete;
+	/*!
+    \brief  Copy Constructor
+    */
+    DAL( const DAL &obj ):
+		mi_Length(obj.mi_Length),
+		mi_Capacity(obj.mi_Capacity),
+		mpt_Data(new NodeAL[obj.mi_Length])
+	{
+        *this = obj;
+    }
 
+    /*!
+    \brief assignment operator
+    */
+    DAL& operator=( const DAL &obj ){
+        if( this != &obj ){
+            
+			this->mi_Length = obj.mi_Length;
+            reserve(obj.mi_Capacity);
+			
+            std::copy( obj.mpt_Data, obj.mpt_Data + obj.mi_Length, this->mpt_Data );
+
+        }
+        return *this;
+}
 	/*!
 	 *  @brief  Remove the info related to the "_x" key.
 	 *  @param  _x The key
@@ -222,7 +240,7 @@ public:
 
 };
 
-#include "dal.cpp"
-#include "dsal.cpp"
+#include "dal.hpp"
+#include "dsal.hpp"
 
 #endif
