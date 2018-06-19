@@ -56,7 +56,7 @@ bool DAL<Key, Data, KeyComparator>::remove( const Key & _x ){
 	if( empty() )
 	{
 
-		std::cout << "\n@remove ERROR: Cannot remove an element from an empty Dictionary!\n";
+//		std::cerr << "\n@remove ERROR: Cannot remove an element from an empty Dictionary!\n";
 		return false;
 	}
 
@@ -65,7 +65,7 @@ bool DAL<Key, Data, KeyComparator>::remove( const Key & _x ){
 	//! Verifies if there is any data with the key param.
 	if( indice == -1 )
 	{
-		std::cout << "\n@remove ERROR: Key not found on the Dictionary!\n";
+//		std::cerr << "\n@remove ERROR: Key not found on the Dictionary!\n";
 		return false;
 	}
 
@@ -127,7 +127,7 @@ bool DAL<Key, Data, KeyComparator>::insert( const Key & _newKey, const Data & _n
 	//<! Verifies if the array is full
 	if( full() ){
 
-		/*std::cout << "\t@insert ERROR: Cannot insert a new element in a full Dictionary!\n";*/
+		/*// std::cout << "\t@insert ERROR: Cannot insert a new element in a full Dictionary!\n";*/
 		reserve(mi_Capacity + 1);		
 		return false;
 	}
@@ -135,7 +135,7 @@ bool DAL<Key, Data, KeyComparator>::insert( const Key & _newKey, const Data & _n
 	//! If there is an element in the Dictionaray with this key, do not insert it
 	if( not (_search( _newKey ) == -1) ) {
 
-		std::cout << "\n@insert ERROR: Key already exists on the Dictionary!\n";
+//		// std::cout << "\n@insert ERROR: Key already exists on the Dictionary!\n";
 		return false;
 	}
  
@@ -192,13 +192,13 @@ bool DAL<Key, Data, KeyComparator>::sucessor( const Key & _x , Key & _y ) const{
 
 	if( indice == -1 ){ // If it found the element or if it is the last one
 
-		std::cout << "\n@sucessor ERROR: Key not found on the Dictionary!\n";
+//		// std::cout << "\n@sucessor ERROR: Key not found on the Dictionary!\n";
 		return false;
 	}
 
 	if( indice == (mi_Length - 1) ){
 
-		std::cout << "@sucessor ERROR: Cannot recover a sucessor from the last element on array!\n";
+//		// std::cout << "@sucessor ERROR: Cannot recover a sucessor from the last element on array!\n";
 		return false;
 	}
 
@@ -217,13 +217,13 @@ bool DAL<Key, Data, KeyComparator>::predecessor( const Key & _x , Key & _y ) con
 
 	if( indice == -1 ){ // If it found the element or if it is the first one
 
-		std::cout << "\n@predecessor ERROR: Key not found on the Dictionary!\n";
+		// std::cout << "\n@predecessor ERROR: Key not found on the Dictionary!\n";
 		return false;
 	}
 
 	if( indice == 0 ){
 		
-		std::cout << "\n@predecessor ERROR: Cannot recover a predecessor from the first element on array!\n";
+		// std::cout << "\n@predecessor ERROR: Cannot recover a predecessor from the first element on array!\n";
 		return false;
 	}
 
