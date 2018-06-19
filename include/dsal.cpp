@@ -49,6 +49,9 @@ bool DSAL<Key, Data, KeyComparator>::insert
 	int index = _search(_newKey);
 	
 	if(index != -1){ return false;}
+	
+	if(this->mi_Length == this->mi_Capacity)
+		this->reserve(this->mi_Length *2);
 
 	NodeAL *pivot;
 	int distance;

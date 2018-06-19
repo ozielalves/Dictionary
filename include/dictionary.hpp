@@ -53,6 +53,14 @@ public:
 	//! @brief Class Destructor, destructs the memory pointed by m_data
 	virtual ~DAL ( void );
 
+	/* Disabling copy constructor and assignment operator */
+
+	/*! @brief disabled*/
+	DAL(const DAL &) = delete;
+	
+	/*! @brief disabled*/
+	DAL operator=( const DAL &) = delete;
+
 	/*!
 	 *  @brief  Remove the info related to the "_x" key.
 	 *  @param  _x The key
@@ -173,7 +181,7 @@ public:
 	 * 	@return True if the remove happened successfully; False otehrwise.
 	 *	@note
 	 */
-//	bool remove( const Key & _x );
+	bool remove( const Key & _x );
 
 	/*!
 	 *  @brief Inserts an Key and infor in the array 
