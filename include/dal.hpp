@@ -128,8 +128,10 @@ bool DAL<Key, Data, KeyComparator>::insert( const Key & _newKey, const Data & _n
 	if( full() ){
 
 		/*// std::cout << "\t@insert ERROR: Cannot insert a new element in a full Dictionary!\n";*/
-		reserve(mi_Capacity + 1);		
-		return false;
+		reserve(mi_Capacity * 2 );		
+		NodeAL new_node( _newKey, _newInfo ); 
+		mpt_Data[mi_Length++] = new_node; //!< Inseting the data in the array
+		return true;
 	}
 	
 	//! If there is an element in the Dictionaray with this key, do not insert it

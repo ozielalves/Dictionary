@@ -50,7 +50,15 @@ int main ( void )
 
         // dicting the insert for overflow check.
         assert( dict.insert( 3, "CCC" ) );
-        assert( dict.insert( 4, "DDD" ) == false );
+        // Trying to insert an extra item.
+        // The dictionary may return false if it's a static version,
+        // or true, if it's a dynamic version.
+        auto old_size = dict.capacity();
+        auto result = dict.insert( 4, "DDD" );
+        if ( result == true )
+            assert( dict.capacity() > old_size );
+        else
+            assert( result == false ); // static dictionary
     }
 
     {
