@@ -1,251 +1,483 @@
+/**
+ * @file driver_dictionary.cpp
+ * @brief File for DAL and DSAL classes tests .
+ */
+
+#include <iostream>   // cout, endl
+#include <cassert>    // assert()
+#include <algorithm>  // shuffle
+#include <random>     // random_device, mt19937
+#include <iterator>   // std::begin(), std::end()
+
 #include "dictionary.hpp"
-#include <cassert>
 
-int main(int argc, char *argv[]){
-
-	struct intComparator{
-	
-		bool operator() (const int &lhs, const int &rhs ) const { return lhs < rhs; }
-	};
-
+/**
+ * @brief      Class for my key comparator.
+ */
+class MyKeyComparator
 {
+    public:
+        bool operator ()( const int & lhs, const int & rhs ) const
+        {
+            return lhs < rhs ;
+        }
+};
 
-/*--------------------------- Constructor Test ------------------------------*/
-
-	std::cout << "\n                                                    Constructor Testing..." << "                                             \n";
-
-	DSAL<int, int, intComparator> Dict(10);
-
-	assert( Dict.full() == false );
-	assert( Dict.empty() );
-	assert( Dict.capacity() == 10 );
-	assert( Dict.size() == 0 );	
-
-	std::cout << "                                                     Successfully done..." << "                                             \n";
-	std::cout << "\nCurrent Dictionary: \n";	
-	std::cout << "\t" << Dict << std::endl;
-
-/*---------------------------- Insertion Test -------------------------------*/ 
-
-	std::cout << "\n                                                     Insertion Testing..." << "                                             \n";
-	Dict.insert(4,7);
-	std::cout << "\nCurrent Dictionary: \n";	
-
-	std::cout << "\t" << Dict << std::endl;
-
-	Dict.insert(3,6);
-	std::cout << "\nCurrent Dictionary: \n";	
-
-
-	std::cout << "\t" << Dict << std::endl;
-
-	Dict.insert(1,5);
-	
-	std::cout << "\nCurrent Dictionary: \n";	
-	std::cout << "\t" << Dict << std::endl;
-
-	Dict.insert(2,5);
-
-	std::cout << "\nCurrent Dictionary: \n";	
-	std::cout << "\t" << Dict << std::endl;
-
-	Dict.insert(7,5);
-	
-	std::cout << "\nCurrent Dictionary: \n";	
-	std::cout << "\t" << Dict << std::endl;
-
-/*----------------------------- Reserve Test --------------------------------*/ 
-
-	std::cout << "\n\tReserve Testing...\n";
-
-	std::cout << "\nAn second Dictionary: \n";
-
-	DSAL<int, int, intComparator> dict(2);
-
-	std::cout << "\nCurrent Dictionary: \n";	
-	std::cout << "\t" << dict << std::endl;
-
-	dict.insert(2,3);
-	dict.insert(3,4);
-	dict.insert(4,5);
-
-	std::cout << "\nCurrent Dictionary: \n";	
-	std::cout << "\t" << dict << std::endl;
-
-	dict.insert(5,6);
-
-	std::cout << "\nCurrent Dictionary: \n";	
-	std::cout << "\t" << dict << std::endl;
-
-	std::cout << "\n                                                     Successfully done!" << "                                             \n";
-
-/*--------------------------- Min and Max Test ------------------------------*/	
-	
-	std::cout << "\n                                                 Minimum and Maximum Testing..." << "                                             \n";
-
-	std::cout << "Dict Min : " <<  Dict.min() << std::endl;
-	std::cout << "Dict Max : " <<  Dict.max() << std::endl;
-
-	std::cout << "\n                                                     Successfully done!" << "                                             \n";
-
-
-/*------------------------------ Remove Test --------------------------------*/  
-
-	std::cout << "\n                                                      Remove Testing..." << "                                             \n";
-
-	std::cout << "\tRemoving the Minimum ID...\n";
-	Dict.remove(Dict.min());
-	
-	std::cout << "\nCurrent Dictionary: \n";	
-	std::cout << "\t" << Dict << std::endl;
-
-	std::cout << "\n                                                     Successfully done!" << "                                             \n";
-}
-
-// DAL Testing
-
+int main ( void )
 {
+    {
+        // Testing default constructor.
+        auto cmp = [](const int& l, const int& r) { return l < r; };
+        DAL<int, std::string, decltype(cmp) > dic;
+        assert( dic.capacity() == 50 );
 
-/*--------------------------- Constructor Test ------------------------------*/
+        DAL<int, std::string, MyKeyComparator> dic2(100);
+        assert( dic2.capacity() == 100 );
+    }
 
-	std::cout << "\n                                                    Constructor Testing..." << "                                             \n";
+    {
+        // Testing insert.
+        DAL<int, std::string, MyKeyComparator> dict(3);
+        auto cmp = [](const int& l, const int& r) { return l < r; };
+        DAL<int, std::string, decltype(cmp) > dict2(3);
 
-	DAL<int, int, intComparator> dict(5);
-	assert( dict.full() == false );
-	assert( dict.empty() );
-	assert( dict.capacity() == 5 );
-	assert( dict.size() == 0 );
+        // testing the regular insert
+        assert( dict.insert( 1, "AAA" ) );
+        assert( dict.insert( 2, "BBB" ) );
 
-	std::cout << "\nCurrent Dictionary: \n";	
-	std::cout << "\t" << dict << std::endl;
+        // dicting the insert failure for duplicate keys.
+        assert( false == dict.insert( 2, "BBB" ) );
 
-	std::cout << "\n                                                     Successfully done!" << "                                             \n";
+        // dicting the insert for overflow check.
+        assert( dict.insert( 3, "CCC" ) );
+        assert( dict.insert( 4, "DDD" ) == false );
+    }
 
-/*---------------------------- Insertion Test -------------------------------*/ 
+    {
+        // Testing search.
+        DAL<int, std::string, MyKeyComparator> dict;
+        std::string result;
 
-	std::cout << "\n                                                     Insertion Testing..." << "                                             \n";
+        // The Data
+        struct Entry
+        {
+            int key;
+            std::string data;
+        };
 
-	assert ( dict.insert(0, 100) );
-	assert( not dict.empty() );
-	assert ( dict.insert(3, 150) );
-	assert ( dict.insert(0, 656) == false ); // Doubled key
-	assert ( dict.insert(7, 899) );
-	assert ( dict.insert(2, 745) );
-	assert ( dict.insert(6, 445) );
-	assert ( dict.insert(8,   0) == false ); // FULL Dictionary
-	assert( dict.size() == 5 );
+        Entry table[] =
+        {
+            { 1, "AAA" },
+            { 2, "BBB" },
+            { 3, "CCC" },
+            { 4, "DDD" },
+            { 5, "EEE" }
+        };
 
-	std::cout << "\nCurrent Dictionary: \n";	
-	std::cout << "\t" << dict << std::endl;
+        // insert all itens first.
+        for ( const auto & e : table )
+        {
+            assert( dict.insert( e.key, e.data ) );
+        }
 
-	std::cout << "\n                                                     Successfully done!" << "                                             \n";
+        // retrieve itens
+        for ( const auto & e : table )
+        {
+            assert( dict.search( e.key, result ) );
+            assert( result == e.data );
+        }
 
+        // serching for non-existing key.
+        assert( dict.search( 6, result ) == false);
 
+        // seaching in an empty dictionary.
+        DAL<int, std::string> dict2;
+        assert ( dict2.search( 1, result) == false );
+    }
 
-/*--------------------- Sucessor and Predecessor Test -----------------------*/
-	std::cout << "\n                                              Sucessor and Predecessor Testing..." << "                                             \n";
+    {
+        // Testing remove.
+        DAL<int, std::string, MyKeyComparator> dict;
+        std::string result;
 
-	int chave; // Aux variable to the test methode
-	assert( dict.sucessor(7, chave) );
-	assert( chave == 2 ); // Recovered key from the search
-	assert( dict.sucessor(6, chave) == false ); // Last elemnt has no Sucessor
-	assert( chave == 2 ); // The element stills the same(wasn't setted)
-	assert( dict.predecessor(7, chave) );
-	assert( chave == 3 ); // Recovered key from the search
-	assert( dict.predecessor(0, chave) == false ); // First element has no Predecessor
-	assert( chave == 3 ); // The element stills the same(wasn't setted)
-	std::cout << "\n                                                     Successfully done!" << "                                             \n";
+        // The Data
+        struct Entry
+        {
+            int key;
+            std::string data;
+        };
 
-
-/*------------------------------ Search Test --------------------------------*/
-	std::cout << "\n                                                      Search Testing..." << "                                             \n";
-	
-	int elem; // Aux variable to test search methode
-	assert( dict.search(2, elem) ); // Exists
-	assert( elem == 745 ); // Recovered value from the search
-	assert( dict.search(8, elem) == false ); // Does not exists
-	assert( elem == 745 ); // The element stills the same(wasn't setted)
-	std::cout << "\n                                                     Successfully done!" << "                                             \n";
-	
-
-/*------------------------------ Remove Test --------------------------------*/  
-
-	std::cout << "\n                                                      Remove Testing..." << "                                             \n";
-
-	assert( dict.remove(5) == false ); // Does not exists
-	assert( dict.remove(3) );          // Exists
-	assert( dict.remove(0) );
-	assert( dict.size() == 3 );
-	assert( dict.remove(7) );
-	assert( dict.remove(2) );
-	assert( dict.remove(6) );
-	assert( dict.remove(7) == false ); // EMPTY Dictionary
-	
-	std::cout << "\nCurrent Dictionary: \n";	
-	std::cout << "\t" << dict << std::endl;
-
-	std::cout << "\n                                                     Successfully done!" << "                                             \n";
-
-}
-
-// Data type: String - Testing
-{
-
-/*--------------------------- Constructor Test ------------------------------*/
-
-	std::cout << "\n                                                    Constructor Testing..." << "                                             \n";
-	DAL<int, std::string, intComparator> dict;
-	assert( dict.full() == false );
-	assert( dict.capacity() == 50 );
-	std::cout << "\nCurrent Dictionary: \n";	
-	std::cout << "\t" << dict << std::endl;
-	std::cout << "\n                                                     Successfully done!" << "                                             \n";
-
-/*---------------------------- Insertion Test -------------------------------*/
-
-	std::cout << "\n                                                     Insertion Testing..." << "                                             \n";
-	assert ( dict.insert(5, "odio") );
-	assert( not dict.empty() );
-	assert ( dict.insert(3, "rancor") );
-	assert ( dict.insert(9, "solidao") );
-	assert ( dict.insert(3, "discordia") == false ); // Doubled key
-	std::cout << "\nCurrent Dictionary: \n";	
-	std::cout << "\t" << dict << std::endl;
-	std::cout << "\n                                                     Successfully done!" << "                                             \n";
-
-/*--------------------------- Min and Max Test ------------------------------*/
-
-	std::cout << "\n                                                 Minimum and Maximum Testing..." << "                                             \n";
-	assert( dict.min() ==  3 );
-	assert( dict.max() ==  9 );
-	std::cout << "\n                                                     Successfully done!" << "                                             \n";	
-
-/*------------------------------ Search Test --------------------------------*/
-
-	std::cout << "\n                                                      Search Testing..." << "                                             \n";
-	std::string elem;
-	assert( dict.search(3, elem) ); // Exists
-	assert( elem == "rancor" ); // Recovered value from the search
-	assert( dict.search(8, elem) == false ); // Does not exists
-	assert( elem == "rancor" ); // Last value stills
-	std::cout << "\n                                                     Successfully done!" << "                                             \n";	
+        Entry table[] =
+        {
+            { 1, "AAA" },
+            { 2, "BBB" },
+            { 3, "CCC" },
+            { 4, "DDD" },
+            { 5, "EEE" }
+        };
 
 
-/*------------------------------ Remove Test --------------------------------*/ 
+        // insert all itens first.
+        for ( const auto & e : table )
+        {
+            assert( dict.insert( e.key, e.data ) );
+        }
 
-	std::cout << "\n                                                      Remove Testing..." << "                                             \n";
-	assert( dict.remove(5) ); 
-	assert( dict.remove(0) == false ); // Does not exists
-	assert( dict.remove(9) );        
-	assert( dict.size() == 1 );
-	assert( dict.remove(3) );
-	assert( dict.remove(2) == false ); // EMPTY Dictionary
-	std::cout << "\nCurrent Dictionary: \n";	
-	std::cout << "\t" << dict << std::endl;
-	std::cout << "\n                                                     Successfully done!" << "                                             \n";
-}
+        // Trying to remove a non-existing element.
+        assert( false == dict.remove( 6 , result ) );
 
-	std::cout << "\n                                                       Exit Success!" << "                                             \n";
-	
-	return EXIT_SUCCESS;
+        // remove itens
+        for ( const auto & e : table )
+        {
+            assert( dict.remove( e.key, result ) );
+            assert( result == e.data );
+        }
+
+        assert( dict.empty() );
+
+        // seaching in an empty dictionary.
+        DAL<int, std::string> dict2;
+        assert ( false == dict2.remove( 1, result) );
+    }
+    
+    {
+        // Testing min/max.
+        DAL<int, std::string, MyKeyComparator> dict;
+        std::string result;
+
+        // The Data
+        struct Entry
+        {
+            int key;
+            std::string data;
+        };
+
+        Entry table[] =
+        {
+            { 1, "AAA" },
+            { 2, "BBB" },
+            { 3, "CCC" },
+            { 4, "DDD" },
+            { 5, "EEE" }
+        };
+
+        // Shuffle table
+        std::random_device rd;
+        std::mt19937 g(rd());
+        std::shuffle( std::begin( table ), std::end( table ), g);
+
+        // insert all itens first.
+        for ( const auto & e : table )
+        {
+            assert( dict.insert( e.key, e.data ) );
+        }
+
+        assert( dict.min() == 1 );
+        assert( dict.max() == 5 );
+
+        // Trying to get min/max of a empty dictionary.
+        DAL<int, std::string> dict2;
+        auto worked( false );
+        try {
+            result = dict2.min();
+        }
+        catch ( std::out_of_range & e )
+        {
+            worked = true;
+        }
+        assert ( worked );
+        worked =  false;
+        try {
+            result = dict2.max();
+        }
+        catch ( std::out_of_range & e )
+        {
+            worked = true;
+        }
+        assert ( worked );
+    }
+
+    {
+        // Testing successor/predecessor
+        DAL<int, std::string, MyKeyComparator> dict;
+        std::string result;
+
+        // The Data
+        struct Entry
+        {
+            int key;
+            std::string data;
+        };
+
+        Entry table[] =
+        {
+            { 1, "AAA" },
+            { 2, "BBB" },
+            { 3, "CCC" },
+            { 4, "DDD" },
+            { 5, "EEE" }
+        };
+
+        // Shuffle table
+        std::random_device rd;
+        std::mt19937 g(rd());
+        std::shuffle( std::begin( table ), std::end( table ), g);
+
+        // insert all itens first.
+        for ( const auto & e : table )
+        {
+            assert( dict.insert( e.key, e.data ) );
+        }
+
+        auto key { dict.min() };
+        int next_key{0};
+        int i{1};
+        while( dict.successor( key, next_key ) )
+        {
+            assert( key == i++ );
+            // go to the next key.
+            key = next_key;
+        }
+        assert( key == i );
+
+        key = dict.max();
+        next_key = 0;
+        i = 5;
+        while( dict.predecessor( key, next_key ) )
+        {
+            assert( key == i-- );
+            // go to the next key.
+            key = next_key;
+        }
+        assert( key == i );
+    }
+
+
+    {
+        // Testing default constructor.
+        DSAL<int, std::string, MyKeyComparator> dic;
+        assert( dic.capacity() == 50 );
+
+        DSAL<int, std::string, MyKeyComparator> dic2(100);
+        assert( dic2.capacity() == 100 );
+    }
+
+    {
+        // Testing insert.
+        DSAL<int, std::string> dict(3);
+
+        // testing the regular insert
+        assert( dict.insert( 1, "AAA" ) );
+        assert( dict.insert( 2, "BBB" ) );
+
+        // dicting the insert failure for duplicate keys.
+        assert( false == dict.insert( 2, "BBB" ) );
+
+        // dicting the insert for overflow check.
+        assert( dict.insert( 3, "CCC" ) );
+        assert( dict.insert( 4, "DDD" ) == false );
+    }
+
+    {
+        // Testing search.
+        DSAL<int, std::string, MyKeyComparator> dict;
+        std::string result;
+
+        // The Data
+        struct Entry
+        {
+            int key;
+            std::string data;
+        };
+
+        Entry table[] =
+        {
+            { 1, "AAA" },
+            { 2, "BBB" },
+            { 3, "CCC" },
+            { 4, "DDD" },
+            { 5, "EEE" }
+        };
+
+
+        // insert all itens first.
+        for ( const auto & e : table )
+        {
+            assert( dict.insert( e.key, e.data ) );
+        }
+
+        // retrieve itens
+        for ( const auto & e : table )
+        {
+            assert( dict.search( e.key, result ) );
+            assert( result == e.data );
+        }
+
+        // serching for non-existing key.
+        assert( dict.search( 6, result ) == false);
+
+        // seaching in an empty dictionary.
+        DSAL<int, std::string> dict2;
+        assert ( dict2.search( 1, result) == false );
+    }
+
+    {
+        // Testing remove.
+        DSAL<int, std::string, MyKeyComparator> dict;
+        std::string result;
+
+        // The Data
+        struct Entry
+        {
+            int key;
+            std::string data;
+        };
+
+        Entry table[] =
+        {
+            { 1, "AAA" },
+            { 2, "BBB" },
+            { 3, "CCC" },
+            { 4, "DDD" },
+            { 5, "EEE" }
+        };
+
+
+        // insert all itens first.
+        for ( const auto & e : table )
+        {
+            assert( dict.insert( e.key, e.data ) );
+        }
+
+        // Trying to remove a non-existing element.
+        assert( false == dict.remove( 6 , result ) );
+
+        // remove itens
+        for ( const auto & e : table )
+        {
+            assert( dict.remove( e.key, result ) );
+            assert( result == e.data );
+        }
+
+        assert( dict.empty() );
+
+        // seaching in an empty dictionary.
+        DSAL<int, std::string> dict2;
+        assert ( false == dict2.remove( 1, result) );
+    }
+    
+    {
+        // Testing min/max.
+        DSAL<int, std::string, MyKeyComparator> dict;
+        std::string result;
+
+        // The Data
+        struct Entry
+        {
+            int key;
+            std::string data;
+        };
+
+        Entry table[] =
+        {
+            { 1, "AAA" },
+            { 2, "BBB" },
+            { 3, "CCC" },
+            { 4, "DDD" },
+            { 5, "EEE" }
+        };
+
+        // Shuffle table
+        std::random_device rd;
+        std::mt19937 g(rd());
+        std::shuffle( std::begin( table ), std::end( table ), g);
+
+        // insert all itens first.
+        for ( const auto & e : table )
+        {
+            assert( dict.insert( e.key, e.data ) );
+        }
+
+        assert( dict.min() == 1 );
+        assert( dict.max() == 5 );
+
+        // Trying to get min/max of a empty dictionary.
+        DSAL<int, std::string> dict2;
+        auto worked( false );
+        try {
+            result = dict2.min();
+        }
+        catch ( std::out_of_range & e )
+        {
+            worked = true;
+        }
+        assert ( worked );
+        worked =  false;
+        try {
+            result = dict2.max();
+        }
+        catch ( std::out_of_range & e )
+        {
+            worked = true;
+        }
+        assert ( worked );
+    }
+
+    {
+        // Testing successor/predecessor
+        DSAL<int, std::string, MyKeyComparator> dict;
+        std::string result;
+
+        // The Data
+        struct Entry
+        {
+            int key;
+            std::string data;
+        };
+
+        Entry table[] =
+        {
+            { 1, "AAA" },
+            { 2, "BBB" },
+            { 3, "CCC" },
+            { 4, "DDD" },
+            { 5, "EEE" }
+        };
+
+        // Shuffle table
+        std::random_device rd;
+        std::mt19937 g(rd());
+        std::shuffle( std::begin( table ), std::end( table ), g);
+
+        // insert all itens first.
+        for ( const auto & e : table )
+        {
+            assert( dict.insert( e.key, e.data ) );
+        }
+
+        auto key { dict.min() };
+        int next_key{0};
+        int i{1};
+        while( dict.successor( key, next_key ) )
+        {
+            assert( key == i++ );
+            // go to the next key.
+            key = next_key;
+        }
+        assert( key == i );
+
+        key = dict.max();
+        next_key = 0;
+        i = 5;
+        while( dict.predecessor( key, next_key ) )
+        {
+            assert( key == i-- );
+            // go to the next key.
+            key = next_key;
+        }
+        assert( key == i );
+    }
+
+    std::cout << ">>> Passed the unit tests successfully!\n";
+    return EXIT_SUCCESS;
 }

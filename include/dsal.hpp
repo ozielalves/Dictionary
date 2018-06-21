@@ -76,7 +76,7 @@ bool DSAL<Key, Data, KeyComparator>::insert
 }
 
 template <typename Key, typename Data, typename KeyComparator>
-bool DSAL<Key, Data, KeyComparator>::sucessor( const Key & _x , Key & _y ) const{
+bool DSAL<Key, Data, KeyComparator>::successor( const Key & _x , Key & _y ) const{
 
 	int index = _search(_x);
 	if(index == this->mi_Length) return false;
@@ -94,7 +94,7 @@ bool DSAL<Key, Data, KeyComparator>::predecessor( const Key & _x , Key & _y ) co
 }
 
 template <typename Key, typename Data, typename KeyComparator>
-bool DSAL<Key, Data, KeyComparator>::remove( const Key & _x ) {
+bool DSAL<Key, Data, KeyComparator>::remove( const Key & _x, Data & _D ) {
 
 
 	int index = _search(_x);
@@ -106,5 +106,6 @@ bool DSAL<Key, Data, KeyComparator>::remove( const Key & _x ) {
 	std::copy(this->mpt_Data+index+1,
 			this->mpt_Data+this->mi_Length,this->mpt_Data+index);
 
+	_D = this->mpt_Data[index].info;
 	this->mi_Length--;
 }

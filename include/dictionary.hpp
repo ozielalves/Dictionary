@@ -2,7 +2,7 @@
  * @file dictionary.hpp
  * @version 1.0
  * @since Jun, 12.
- * @date May, 12.
+ * @date Jun, 21.
  * @author Oziel Alves (ozielalves@ufrn.edu.br)
  * @author Max Willian (maxwilliam780@gmail.com)
  * @title The Dictionary ADT
@@ -14,9 +14,10 @@
 #include <iostream>
 #include <string>
 #include <iterator>
+#include <functional>
 
 //! @brief Dictionary with Array List 
-template < typename Key, typename Data, typename KeyComparator >
+template < typename Key, typename Data, typename KeyComparator = std::less<int> >
 class DAL{
 
 protected:
@@ -84,7 +85,7 @@ public:
 	 *  @param  _x The key
 	 *  @return True if the key was removed successfuly; False otherwise.
 	 */
-	bool remove( const Key & _x );
+	bool remove( const Key & _x,  Data & _d );
 
 	/*!
 	 *  @brief  Serch the key's "_x" data
@@ -121,10 +122,10 @@ public:
 	Key max( void ) const;
 
 	/*!
-	 *  @brief Recovers in "_y" the sucessor key to "_x".
+	 *  @brief Recovers in "_y" the successor key to "_x".
 	 *  @return True If it does exists; False otherwise.
 	 */
-	bool sucessor( const Key & _x , Key & _y ) const;
+	bool successor( const Key & _x , Key & _y ) const;
 
 	/*!
 	 *  @brief Recovers in "_y" the predecessor key to "_x".
@@ -169,7 +170,7 @@ public:
 };
 
 //! @brief Dictionary with Sorted Array List 
-template < typename Key, typename Data, typename KeyComparator >
+template < typename Key, typename Data, typename KeyComparator = std::less<int> >
 class DSAL : public DAL< Key, Data, KeyComparator > /*heritage*/ {
 
 	using NodeAL = typename DAL< Key, Data, KeyComparator >::NodeAL;
@@ -187,7 +188,9 @@ public:
 	/*! 
 	 *  @brief DSAL's copy constructor 
 	 */
-	DSAL ( int _MaxSz ) : DAL< Key, Data, KeyComparator > ( _MaxSz ) { /* Empty */ };
+	DSAL ( int _MaxSz = DAL<Key, Data, KeyComparator>::SIZE ) : DAL< Key, Data, KeyComparator > ( _MaxSz ) { /* Empty */ };
+
+	//DSAL ( void ) : DAL< Key, Data, KeyComparator > ( void ) { /*Empty*/ }
 
 	virtual ~DSAL( void ) { /* Empty */ };
 
@@ -199,7 +202,7 @@ public:
 	 * 	@return True if the remove happened successfully; False otehrwise.
 	 *	@note
 	 */
-	bool remove( const Key & _x );
+	bool remove( const Key & _x,  Data & _d );
 
 	/*!
 	 *  @brief Inserts an Key and infor in the array 
@@ -225,11 +228,11 @@ public:
 	Key max( void ) const { return this->mpt_Data[this->mi_Length-1].id;}
 
 	/*!
-	 *  @brief Recovers in "_y" the sucessor key to "_x".
+	 *  @brief Recovers in "_y" the successor key to "_x".
 	 *  @return True If it does exists; False otherwise.
 	 *	@note
 	 */
-	bool sucessor( const Key & _x , Key & _y ) const;
+	bool successor( const Key & _x , Key & _y ) const;
 
 	/*!
 	 *  @brief Recovers in "_y" the predecessor key to "_x".

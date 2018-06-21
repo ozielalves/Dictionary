@@ -50,7 +50,7 @@ DAL<Key, Data, KeyComparator>::~DAL(){
  *  @return True if the key was removed successfuly; False otherwise.
  */
 template < typename Key, typename Data, typename KeyComparator >
-bool DAL<Key, Data, KeyComparator>::remove( const Key & _x ){
+bool DAL<Key, Data, KeyComparator>::remove( const Key & _x,  Data & _D ){
 
 	//! Verifies if the array is empty
 	if( empty() )
@@ -68,7 +68,7 @@ bool DAL<Key, Data, KeyComparator>::remove( const Key & _x ){
 //		std::cerr << "\n@remove ERROR: Key not found on the Dictionary!\n";
 		return false;
 	}
-
+	_D = mpt_Data[indice].info;
 	mpt_Data[ indice ] = mpt_Data[--mi_Length]; //!< Removing data from the array 
 
 	return true;
@@ -152,6 +152,7 @@ bool DAL<Key, Data, KeyComparator>::insert( const Key & _newKey, const Data & _n
 template < typename Key, typename Data, typename KeyComparator >
 Key DAL<Key, Data, KeyComparator>::min( void ) const{
 
+	if(empty()) throw std::out_of_range("Empty dict");
 	KeyComparator compare; //<! Comparation functor
 	
 	Key min = mpt_Data[0].id; //<! A min value
@@ -170,6 +171,8 @@ Key DAL<Key, Data, KeyComparator>::min( void ) const{
 template < typename Key, typename Data, typename KeyComparator >
 Key DAL<Key, Data, KeyComparator>::max( void ) const{
 
+
+	if(empty()) throw std::out_of_range("Empty dict");
 	KeyComparator compare; //!< Comparation functor
 	
 	Key max = mpt_Data[0].id;//!< A max value
@@ -186,24 +189,22 @@ Key DAL<Key, Data, KeyComparator>::max( void ) const{
  *  @return True If it does exists; False otherwise.
  */
 template < typename Key, typename Data, typename KeyComparator >
-bool DAL<Key, Data, KeyComparator>::sucessor( const Key & _x , Key & _y ) const{
+bool DAL<Key, Data, KeyComparator>::successor( const Key & _x , Key & _y ) const{
 
-	int indice = _search( _x );
-
-	if( indice == -1 ){ // If it found the element or if it is the last one
-
-//		// std::cout << "\n@sucessor ERROR: Key not found on the Dictionary!\n";
-		return false;
+	int minimum = _x;
+	for(int i = 0; i < mi_Length; i++)
+	{
+		if(mpt_Data[i].id > _x)
+			if(mpt_Data[i].id < minimum)
+				minimum = mpt_Data[i].id;
 	}
 
-	if( indice == (mi_Length - 1) ){
+	if(minimum == _x) return false;
 
-//		// std::cout << "@sucessor ERROR: Cannot recover a sucessor from the last element on array!\n";
-		return false;
+	else{
+		_y = minimum;
+		return true;
 	}
-
-	_y = mpt_Data[ indice+1 ].id; //!< otherwise recovers the info from "_y"
-	return true;
 }
 
 /*!
@@ -213,22 +214,20 @@ bool DAL<Key, Data, KeyComparator>::sucessor( const Key & _x , Key & _y ) const{
 template < typename Key, typename Data, typename KeyComparator >
 bool DAL<Key, Data, KeyComparator>::predecessor( const Key & _x , Key & _y ) const{
 
-	int indice = _search( _x );
-
-	if( indice == -1 ){ // If it found the element or if it is the first one
-
-		// std::cout << "\n@predecessor ERROR: Key not found on the Dictionary!\n";
-		return false;
+	int maximum = _x;
+	for(int i = 0; i < mi_Length; i++)
+	{
+		if(mpt_Data[i].id < _x)
+			if(mpt_Data[i].id > maximum)
+				maximum = mpt_Data[i].id;
 	}
 
-	if( indice == 0 ){
-		
-		// std::cout << "\n@predecessor ERROR: Cannot recover a predecessor from the first element on array!\n";
-		return false;
-	}
+	if(maximum == _x) return false;
 
-	_y = mpt_Data[ indice-1 ].id; //!< otherwise recovers the info from "_y"
-	return true;
+	else{
+		_y = maximum;
+		return true;
+	}
 }
 
 /*! 
