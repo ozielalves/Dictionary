@@ -22,7 +22,7 @@ int DSAL<Key, Data, KeyComparator>::_search ( const Key & _x ) const {
 	auto end = this->mpt_Data + this->mi_Length;
 	KeyComparator comp;
 
-	while(begin < end){
+	while(begin <= end){
 
 		auto mid = begin + (end-begin)/2;
 
@@ -79,7 +79,7 @@ template <typename Key, typename Data, typename KeyComparator>
 bool DSAL<Key, Data, KeyComparator>::successor( const Key & _x , Key & _y ) const{
 
 	int index = _search(_x);
-	if(index == this->mi_Length) return false;
+	if(index == this->mi_Length-1) return false;
 	_y = this->mpt_Data[index+1].id;
 	return true;
 }
@@ -103,9 +103,13 @@ bool DSAL<Key, Data, KeyComparator>::remove( const Key & _x, Data & _D ) {
 	if(this->mi_Length < 1){
 		throw std::runtime_error("Can't remove elements from empty dict");
 	}
+	
+	_D = this->mpt_Data[index].info;
+	
 	std::copy(this->mpt_Data+index+1,
 			this->mpt_Data+this->mi_Length,this->mpt_Data+index);
 
-	_D = this->mpt_Data[index].info;
+
 	this->mi_Length--;
+	return true;
 }

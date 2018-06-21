@@ -218,14 +218,20 @@ public:
 	 *  @return The smaller key.
 	 * 	@note As the array is sorted now, it returns the first element in the array.
 	 */
-	Key min( void ) const { return this->mpt_Data[0].id ; }
+	Key min( void ) const { 
+		if(this->mi_Length < 1) throw std::out_of_range("Empty Dict");
+		return this->mpt_Data[0].id ; 
+	}
 	
 	/*!
 	 *  @brief Recovers the bigger key in the dictionary.
 	 *  @return The bigger key.
 	 * 	@note As the array is sorted now, it returns the last element in the array.
 	 */
-	Key max( void ) const { return this->mpt_Data[this->mi_Length-1].id;}
+	Key max( void ) const { 
+		if(this->mi_Length < 1) throw std::out_of_range("Empty Dict");
+		return this->mpt_Data[this->mi_Length-1].id;
+	}
 
 	/*!
 	 *  @brief Recovers in "_y" the successor key to "_x".
