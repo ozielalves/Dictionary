@@ -9,7 +9,7 @@
 #include <random>     // random_device, mt19937
 #include <iterator>   // std::begin(), std::end()
 
-#include "dictionary.hpp"
+#include "../include/dictionary.hpp"
 
 /**
  * @brief      Class for my key comparator.
@@ -139,7 +139,7 @@ int main ( void )
         DAL<int, std::string> dict2;
         assert ( false == dict2.remove( 1, result) );
     }
-    
+
     {
         // Testing min/max.
         DAL<int, std::string> dict;
@@ -270,12 +270,20 @@ int main ( void )
         assert( dict.insert( 1, "AAA" ) );
         assert( dict.insert( 2, "BBB" ) );
 
-        // dicting the insert failure for duplicate keys.
+        // testing the insert failure for duplicate keys.
         assert( false == dict.insert( 2, "BBB" ) );
 
-        // dicting the insert for overflow check.
+        // testing the insert for overflow check.
         assert( dict.insert( 3, "CCC" ) );
-        //assert( dict.insert( 4, "DDD" ) == false );
+        // Trying to insert an extra item.
+        // The dictionary may return false if it's a static version,
+        // or true, if it's a dynamic version.
+        auto old_size = dict.capacity();
+        auto result = dict.insert( 4, "DDD" );
+        if ( result == true )
+            assert( dict.capacity() > old_size );
+        else
+            assert( result == false ); // static dictionary
     }
 
     {
@@ -356,7 +364,6 @@ int main ( void )
         for ( const auto & e : table )
         {
             assert( dict.remove( e.key, result ) );
-
             assert( result == e.data );
         }
 

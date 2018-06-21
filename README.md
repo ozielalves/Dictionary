@@ -26,7 +26,8 @@ _DSAL_:
 - [X] Testings
 
 ## Compiling
-	a) For compiling, use:
+	a) For compiling,you need to include "dictionary.hpp" to enable both DAL and DSAL.
+	Then use:
 	`$ make`
 
 ## Running
